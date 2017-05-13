@@ -1,0 +1,25 @@
+= simple_form_for(@northern_ireland) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :reg_charity_number
+    = f.input :sub_charity_number
+    = f.input :charity_name
+    = f.input :date_registered
+    = f.input :status
+    = f.input :date_for_financial_year_ending
+    = f.input :total_income
+    = f.input :total_spending
+    = f.input :charitable_spending
+    = f.input :income_generation_and_governance
+    = f.input :public_address
+    = f.input :website
+    = f.input :email
+    = f.input :telephone
+    = f.input :company_number
+    = f.input :what_the_charity_does
+    = f.input :who_the_charity_helps
+    = f.input :how_the_charity_works
+
+  .form-actions
+    = f.button :submit

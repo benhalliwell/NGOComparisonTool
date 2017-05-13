@@ -1,0 +1,156 @@
+!!! 5
+%html(lang="en")
+  %head
+    =content_for(:title, "Charity Filter Page")
+    %meta(charset="utf-8")
+    %meta(http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1")
+    %meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    %title= content_for?(:title) ? yield(:title) : "<%= app_name %>"
+    = csrf_meta_tags
+    = stylesheet_link_tag "application", :media => "all"
+    = favicon_link_tag 'apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144'
+    = favicon_link_tag 'apple-touch-icon-114x114-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '114x114'
+    = favicon_link_tag 'apple-touch-icon-72x72-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '72x72'
+    = favicon_link_tag 'apple-touch-icon-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png'
+    = favicon_link_tag 'favicon.ico', :rel => 'shortcut icon'
+    = javascript_include_tag "application"
+    / Le HTML5 shim, for IE6-8 support of HTML elements
+    /[if lt IE 9]
+      = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"
+
+  %body
+    / Fixed navbar
+    %nav.navbar.navbar-inverse.navbar-fixed-top
+      .container
+        #navbar.navbar-collapse.collapse
+          %ul.nav.navbar-nav
+            %li
+              %a{:href => "filter"} Charity Comparison Tool
+        / /.nav-collapse
+    #sidebar-wrapper
+      =form_tag("/filter",method: "get") do
+        %ul.sidebar-nav
+          %li.sidebar-brand
+            Search Tools
+          %li
+            =radio_button_tag(:fin,"income")
+            %span.nav-text Income
+            %br/
+          %li
+            =radio_button_tag(:fin,"expen")
+            %span.nav-text Expenditure
+            %br/
+          %li
+            =number_field(:from, :to, in: 0..100000.0, step: 1000)
+            =number_field(:from, :to, in: 0..100000.0, step: 1000)
+          %li
+            %span.nav-text Location:
+            =text_field_tag(:location)
+          %li
+            =radio_button_tag(:location,"hq")
+            %span.nav-text HQ Location
+            %br/
+          %li
+            =radio_button_tag(:location,"op")
+            %span.nav-text Operation Location
+            %br/
+          %li
+            %span.nav-text-solo Radius (km):
+            %div
+              =range_field(:radius, :from, in: 0..300)
+              %p.radius-label
+                0
+                \        100
+                \        200
+                \       300
+          %li
+            =check_box_tag(:development)
+            %span.nav-text 900 Development
+            %br/
+          %li
+            =check_box_tag(:name)
+            %span.nav-text Name (asc)
+            %br/
+          %li
+            =check_box_tag(:name2)
+            %span.nav-text Name (dsc)
+            %br/
+          %li
+            =check_box_tag(:england)
+            %span.nav-text England
+            %br/
+          %li
+            =check_box_tag(:scot)
+            %span.nav-text Scotland
+            %br/
+          %li
+            =check_box_tag(:wales)
+            %span.nav-text Wales
+            %br/
+          =submit_tag("apply")
+    #wrapper.container{:role => "main"}
+      / Main jumbotron for a primary marketing message or call to action
+      .jumbotron
+        %h1 Charity Comparison Tool
+        %p
+          Here you can narrow down your choice of NGO's using the set of tools on the right. To compare charities, simply add them to
+          the comparison.
+      .col-xs-10
+        %input.form-control{:placeholder => "Enter a single charity number or multiple separated by commas for quick compare...", :type => "text"}/
+      .col-xs-2
+        %button.btn.btn-default.btn-md{:type => "button"} Search
+      %br/
+      %br/
+      %br/
+      .col-md-6.results-table
+        %table.table.table-bordered
+          %thead
+            %tr
+              %th Charity Number
+              %th Name
+              %th Compare?
+          %tbody
+<<<<<<< HEAD
+            - @scotlands.each do |scotland|
+              %tr
+                %td= scotland.Charity_Number
+                %td= scotland.Charity_Name
+                %td
+                  %input{:type => "checkbox", :value => ""}/  
+=======
+            - @scotlands.each do |scotland| 
+              %tr
+                %td= scotland.Charity_Number
+                %td= scotland.Charity_Name
+                %input{:type => "checkbox", :value => ""}
+
+>>>>>>> 411933dc7e0dcbeb6a6c16ff244ff668b6df547f
+      .col-xs-7
+      .col-xs-5
+        %a{:href => "comparison"}
+          %button.btn.btn-default.btn-md{:type => "button"} Compare
+        %a{:href => "comparison"}
+          %button.btn.btn-default.btn-md{:type => "button"} Compare All
+        %button.btn.btn-default.btn-md{:type => "button"} Download List
+      .col-xs-12
+        %h2 About Us
+        %p
+          The purpose of this website is to allow users to select and compare different charities based in the UK. It uses data which are available in the public domain and which are supplied by the different charity regulators of England and Wales, Scotland and Northern Ireland.
+
+          Users of this site can compare any group of charities that they wish. However this website is an off-shoot of a research project that examines development NGOs based in the UK. There are, therefore, more ways of exploring the international development sector on this site than for other sectors. More about information about that research project, including the sources of some of the information used in this site is available here.
+
+          We hope you find this site useful. Feedback and comments on it are welcome. Please send these to d.brockington@sheffield.ac.uk.
+      .col-xs-8
+      .col-xs-4
+        %p User Count: 111
+    /
+      Bootstrap core JavaScript
+      \==================================================
+    / Placed at the end of the document so the pages load faster
+    %script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"}
+    :javascript
+      window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+    %script{:src => "js/bootstrap.min.js"}
+    %script{:src => "js/docs.min.js"}
+    / IE10 viewport hack for Surface/desktop Windows 8 bug
+    %script{:src => "js/ie10-viewport-bug-workaround.js"}

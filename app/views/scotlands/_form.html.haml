@@ -1,0 +1,33 @@
+= simple_form_for(@scotland) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :id
+    = f.input :Charity_Number
+    = f.input :Charity_Name
+    = f.input :Registered_Date
+    = f.input :Known_As
+    = f.input :Charity_Status
+    = f.input :Postcode
+    = f.input :Constitutional_Form
+    = f.input :Previous_Constitutional_Form_1
+    = f.input :Geographical_Spread
+    = f.input :Main_Operating_Location
+    = f.input :Purposes
+    = f.input :Beneficiaries
+    = f.input :Activities
+    = f.input :Objectives
+    = f.input :Principal_Office_Trustees_Address
+    = f.input :Website
+    = f.input :Most_recent_year_income
+    = f.input :Most_recent_year_expenditure
+    = f.input :Mailing_cycle
+    = f.input :Year_end
+    = f.input :Parent_charity_name
+    = f.input :Parent_charity_number
+    = f.input :Parent_charity_country_of_registration
+    = f.input :Designated_religious_body
+    = f.input :Regulatory_type
+
+  .form-actions
+    = f.button :submit

@@ -1,0 +1,98 @@
+!!!
+%html{:lang => "en"}
+  %head
+    =content_for(:title, "Charity Comparison Page")
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge", "http-equiv" => "X-UA-Compatible"}/
+    %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}/
+    / The above 3 meta tags must come first in the head; any other head content must come after these tags
+    %meta{:content => "", :name => "description"}/
+    %meta{:content => "", :name => "author"}/
+    %link{:href => "../../favicon.ico", :rel => "icon"}/
+    %title Theme Template for Bootstrap
+    / Bootstrap core CSS
+    %link{:href => "css/bootstrap.min.css", :rel => "stylesheet"}/
+    / Bootstrap theme
+    %link{:href => "css/bootstrap-theme.min.css", :rel => "stylesheet"}/
+    / IE10 viewport hack for Surface/desktop Windows 8 bug
+    %link{:href => "css/ie10-viewport-bug-workaround.css", :rel => "stylesheet"}/
+    / Custom styles for this template
+    %link{:href => "theme.css", :rel => "stylesheet"}/
+    %link{:href => "css/custom.css", :rel => "stylesheet"}/
+    / Just for debugging purposes. Don't actually copy these 2 lines!
+    /[if lt IE 9] <script src="../../assets/js/ie8-responsive-file-warning.js"></script>
+    %script{:src => "js/ie-emulation-modes-warning.js"}
+    / HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
+    /[if lt IE 9]
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  %body
+    / Fixed navbar
+    %nav.navbar.navbar-inverse.navbar-fixed-top
+      .container
+        #navbar.navbar-collapse.collapse
+          %ul.nav.navbar-nav
+            %li
+              %a{:href => "filter"} Charity Comparison Tool
+        / /.nav-collapse
+    #sidebar-wrapper
+      %form{:action => ""}
+        %ul.sidebar-nav
+          %li.sidebar-brand
+            %a{:href => "#"} Search Tools
+          %li
+            %input{:name => "finance", :type => "checkbox", :value => "income"}/
+            %span.nav-text Expenditure
+            %br/
+          %li
+            %input{:name => "finance", :type => "checkbox", :value => "income"}/
+            %span.nav-text Income
+            %br/
+          %li
+            %input{:name => "finance", :type => "checkbox", :value => "income"}/
+            %span.nav-text Function
+            %br/
+          %li
+            %input{:name => "finance", :type => "checkbox", :value => "income"}/
+            %span.nav-text Location
+            %br/
+          %li
+            %input{:name => "finance", :type => "checkbox", :value => "income"}/
+            %span.nav-text Performance
+            %br/
+          %li
+            %input{:name => "finance", :type => "checkbox", :value => "income"}/
+            %span.nav-text Growth
+            %br/
+          %li
+            %input{:name => "finance", :type => "checkbox", :value => "income"}/
+            %span.nav-text Who they help
+            %br/
+            %button.btn.btn-default{:type => "submit"} Submit
+    #wrapper.container{:role => "main"}
+      / Main jumbotron for a primary marketing message or call to action
+      .jumbotron
+        %h1 Comparing Charities
+        %p Comparing: Charity 1, Charity 2...
+      .panel-body
+        %hr/
+        .page-header
+          %h1 Expenditure
+        =image_tag "graph.jpg"
+        .page-header
+          %h1 Income
+        =image_tag "graph.jpg"
+        .page-header
+          %h1 Location
+        %iframe{:allowfullscreen => "", :frameborder => "0", :height => "450", :src => "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d9519.57715330425!2d-1.4879469!3d53.3809409!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc9ec1e8b34c33663!2sUniversidad+de+Sheffield!5e0!3m2!1ses!2suk!4v1488290075941", :style => "border:0", :width => "600"}
+      /
+        Bootstrap core JavaScript
+        \==================================================
+      / Placed at the end of the document so the pages load faster
+      %script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"}
+      :javascript
+        window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+      %script{:src => "js/bootstrap.min.js"}
+      %script{:src => "js/docs.min.js"}
+      / IE10 viewport hack for Surface/desktop Windows 8 bug
+      %script{:src => "js/ie10-viewport-bug-workaround.js"}

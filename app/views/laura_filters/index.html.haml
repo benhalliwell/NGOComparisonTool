@@ -1,0 +1,34 @@
+#page-content-wrapper.container{:role => "main"}
+  / Main jumbotron for a primary marketing message or call to action
+  .jumbotron
+    %h1 NGO Comparison Tool
+
+  .row
+    .col-md-12.col-xs-12
+      .alert.alert-info{:role=>"alert"} These are the charities that are currently in the 'Mapping the UK Development NGO Sector' research project currently being undertaken by the Global Development Institue (GDI, University of Manchester) and the Sheffield Institute for International Development (SIID, University of Sheffield). <br/> See this website for more information: <li>https://mappingdevelopmentngos.wordpress.com</li>
+
+  .row.margin-top-10
+    .col-md-12.results-table
+      %table.table.table-bordered
+        %thead
+          %tr
+            %th Name
+        %tbody
+          =form_tag("/scotscompare", method: "get", :id => "indexForm") do
+            -@laura_filters.each do |ngo|
+              %tr
+                %td= ngo.name
+
+  .row.margin-top-30
+    .col-md-12
+      =will_paginate @laura_filters
+
+  .row.margin-top-30
+    .col-md-12
+      %h2 About Us
+      %p
+        The purpose of this website is to allow users to select and compare different charities based in the UK. It uses data which are available in the public domain and which are supplied by the different charity regulators of England and Wales, Scotland and Northern Ireland.
+
+        Users of this site can compare any group of charities that they wish. However this website is an off-shoot of a research project that examines development NGOs based in the UK. There are, therefore, more ways of exploring the international development sector on this site than for other sectors. More about information about that research project, including the sources of some of the information used in this site is available here.
+
+        We hope you find this site useful. Feedback and comments on it are welcome. Please send these to d.brockington@sheffield.ac.uk.

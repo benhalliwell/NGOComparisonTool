@@ -1,0 +1,87 @@
+#page-content-wrapper.container{:role => "main"}
+
+  .row
+    .col-md-12.page-header
+      %h2 Comparing Charities
+
+  .row
+    .col-md-12
+      .panel.panel-default
+        .panel-heading
+          %h3.panel-title Comparing the following NGOs:
+        .panel-body
+          %p
+            -@compare.each do |a|
+              =" #{a.charity_name},"
+          %p
+            =link_to "Download Data (CSV)", northern_irelandcompare_path(format: "csv"), :class => "button btn btn-primary"
+
+  %p NOTICE: All data is from the financial year 2015/16
+  .row
+    .col-md-12
+      %ul.nav.nav-tabs
+        %li.active{:role => "presentation"}
+          %a{:href => "#expenditure"} Expenditure
+        %li{:role => "presentation"}
+          %a{:href => "#income"} Income
+        %li{:role => "presentation"}
+          %a{:href => "#hq"} Headquarters Locations
+      %br/
+      %a{:name => "expenditure"}
+  .row
+    .col-md-12
+      =column_chart @compare.map {|a| [a.charity_name, a.total_spending]}
+
+  .row.margin-top-30
+    .col-md-12
+      %ul.nav.nav-tabs
+        %li{:role => "presentation"}
+          %a{:href => "#expenditure"} Expenditure
+        %li.active{:role => "presentation"}
+          %a{:href => "#income"} Income
+        %li{:role => "presentation"}
+          %a{:href => "#hq"} Headquarters Locations
+      %a{:name => "income"}
+
+  .row.margin-top-30
+    .col-md-12
+      =column_chart @compare.map {|a| [a.charity_name, a.total_income]}
+
+  .row.margin-top-30
+    .col-md-12
+      %ul.nav.nav-tabs
+        %li{:role => "presentation"}
+          %a{:href => "#expenditure"} Expenditure
+        %li{:role => "presentation"}
+          %a{:href => "#income"} Income
+        %li.active{:role => "presentation"}
+          %a{:href => "#hq"} Headquarters Locations
+      %a{:name => "hq"}
+
+  .row.margin-top-15
+    .col-md-12
+      #map{style: 'height:400px; background: #333;'}
+        :javascript
+          var locations = #{raw @address};
+          var map = new GMaps({
+            div: '#map',
+            lat: 53.3809409,
+            lng: -1.4879469,
+            zoom: 4
+          });
+          for (var i = 0; i < #{@address.length}; i++) {
+            GMaps.geocode({
+              address: locations[i],
+              callback: function(results, status) {
+                if (status == 'OK') {
+                  var latlng = results[0].geometry.location;
+                  map.addMarker({
+                    lat: latlng.lat(),
+                    lng: latlng.lng()
+                  });
+                  console.log("Marker added");
+                }
+              }
+            });
+            console.log(locations[i]);
+          };

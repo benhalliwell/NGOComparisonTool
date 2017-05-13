@@ -1,0 +1,2 @@
+module NorthernIrelandsHelper
+end

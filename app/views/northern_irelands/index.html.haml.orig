@@ -1,0 +1,84 @@
+#sidebar-wrapper
+  =form_for_filterrific @filterrific do |f|
+    %ul.sidebar-nav
+      %br
+      %li.sidebar-brand
+        Search Tools
+      %li
+        =f.text_field(:reg_charity_number, placeholder: "Charity Number")
+      %li
+        =f.text_field(:total_income_g, placeholder: "Minimum Income")
+      %li
+        =f.text_field(:total_income_l, placeholder: "Maximum Income")
+      %li
+        =f.text_field(:total_spending_g, placeholder:"Minimum Expenditure")
+      %li
+        =f.text_field(:total_spending_l, placeholder:"Maximum Expenditure")
+      %li
+        =f.text_field(:what_the_charity_does, placeholder: "Purpose")
+      %li
+        =f.text_field(:who_the_charity_helps, placeholder: "Beneficiaries")
+      %li
+        =f.fields_for :public_address do |address_fields|
+          =address_fields.text_field(:pub_address, placeholder: "HQ Location")
+          =address_fields.range_field(:max_range, in: 1..100)
+      %li
+        =submit_tag("Apply Filters")
+      %li
+        =link_to('Reset_filters',reset_filterrific_url)
+
+
+#wrapper.container{:role => "main"}
+  / Main jumbotron for a primary marketing message or call to action
+  .jumbotron
+    %h1 Charity Comparison Tool
+    %p
+      Here you can narrow down your choice of NGO's using the set of tools on the right. To compare charities, simply add them to
+      the comparison.
+  .col-xs-10
+    =form_for_filterrific @filterrific do |f|
+<<<<<<< HEAD
+      =f.text_field(:charity_name, placeholder: "Search for charitities by name")
+=======
+      =f.text_field(:reg_charity_number, placeholder: "Search for a specific charity by number")
+>>>>>>> 081ab6c607b3d78c8c0178f5b6e2ad50356f1a18
+      =submit_tag("Search")
+  .col-xs-2
+  %br/
+  %br/
+  %br/
+  .col-md-6.results-table
+    %table.table.table-bordered
+      %thead
+        %tr
+          %th Charity Number
+          %th Name
+          %th Compare?
+      %tbody
+        =form_tag("/northern_irelandcompare", method: "get", :id => "indexForm") do
+          -@northern_irelands.each do |ni|
+            %tr
+              %td= ni.reg_charity_number
+              %td= link_to ni.charity_name, ni
+              %td= check_box_tag('ids[]', ni.id)
+          =submit_tag("Compare")
+          =link_to "Download All", northern_irelands_path(format: "csv")
+    =will_paginate @northern_irelands
+  .col-xs-7
+  .col-xs-5
+    %a{:href => "comparison"}
+      %button.btn.btn-default.btn-md{:type => "button"} Compare
+    %a{:href => "comparison"}
+      %button.btn.btn-default.btn-md{:type => "button"} Compare All
+    %button.btn.btn-default.btn-md{:type => "button"} Download List
+  .col-xs-12
+    %h2 About Us
+    %p
+      The purpose of this website is to allow users to select and compare different charities based in the UK. It uses data which are available in the public domain and which are supplied by the different charity regulators of England and Wales, Scotland and Northern Ireland.
+
+      Users of this site can compare any group of charities that they wish. However this website is an off-shoot of a research project that examines development NGOs based in the UK. There are, therefore, more ways of exploring the international development sector on this site than for other sectors. More about information about that research project, including the sources of some of the information used in this site is available here.
+
+      We hope you find this site useful. Feedback and comments on it are welcome. Please send these to d.brockington@sheffield.ac.uk.
+  .col-xs-8
+  .col-xs-4
+    %p User Count: 111

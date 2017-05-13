@@ -1,0 +1,104 @@
+#page-content-wrapper.container{:role => "main"}
+
+  .row
+    .col-md-12.page-header
+      %h2 Data for "#{@england_new.name}"
+
+  .row
+    .col-md-12
+      .alert.alert-info{:role=>"alert"} Below you can find financial information and contact details for "#{@england_new.name}"
+
+
+  .row
+    .col-md-12
+      %ul.nav.nav-tabs
+        %li.active{:role => "presentation"}
+          %a{:href => "#financialData"} Financial Data
+        %li{:role => "presentation"}
+          %a{:href => "#contactDetails"} Contact Details
+      %br/
+      %a{:name => "financialData"}
+    .col-md-12
+      %h3 Income
+      =column_chart @extract_income.map {|a| [a.fystart, a.income]}
+    .col-md-12
+      %h3 Expenditure
+      =column_chart @extract_income.map {|a| [a.fystart, a.expend]}
+
+  .row.margin-top-30
+    .col-md-12
+      %ul.nav.nav-tabs
+        %li{:role => "presentation"}
+          %a{:href => "#financialData"} Financial Data
+        %li.active{:role => "presentation"}
+          %a{:href => "#contactDetails"} Contact Details
+      %br/
+      %a{:name => "contactDetails"}
+
+  .row
+    .col-md-8
+      %p
+        %b Charity number:
+        = @england_new.regno
+      %p
+        %b Sub-Charity number:
+        = @england_new.subno
+      %p
+        %b Charity name:
+        = @england_new.name
+      %p
+        %b Governing Document:
+        = @england_new.gd
+      %p
+        %b NHS Charity? (T/F):
+        = @england_new.nhs
+      %p
+        %b Correspondent Name:
+        = @england_new.corr
+      %p
+        %b Address Line 1:
+        = @england_new.add1
+      %p
+        %b Address Line 2:
+        = @england_new.add2
+      %p
+        %b Address Line 3:
+        = @england_new.add3
+      %p
+        %b Address Line 4:
+        = @england_new.add4
+      %p
+        %b Address Line 5:
+        = @england_new.add5
+      %p
+        %b Phone Number:
+        = @england_new.phone
+      %p
+        %b Fax Number:
+        = @england_new.fax
+
+    .col-md-4
+      %p
+        %b Postcode:
+        = @england_new.postcode
+      #map{style: 'height:400px; background: #333;'}
+        :javascript
+          var map = new GMaps({
+            div: '#map',
+            lat: -12.043333,
+            lng: -77.028333
+          });
+          GMaps.geocode({
+            address: "#{@extract_address}",
+            callback: function(results, status) {
+              if (status == 'OK') {
+                var latlng = results[0].geometry.location;
+                map.setCenter(latlng.lat(), latlng.lng());
+                map.addMarker({
+                  lat: latlng.lat(),
+                  lng: latlng.lng()
+                });
+              }
+            }
+          });
+  / /container

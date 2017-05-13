@@ -1,0 +1,2 @@
+module EnglandNewsHelper
+end

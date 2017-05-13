@@ -1,0 +1,114 @@
+#page-content-wrapper.container{:role => "main"}
+
+  .row
+    .col-md-12.page-header
+      %h2 Data for "#{@northern_ireland.charity_name}"
+
+  .row
+    .col-md-12
+      .alert.alert-info{:role=>"alert"} Below you can find financial information and contact details for "#{@northern_ireland.charity_name}"
+
+  .row
+    .col-md-12
+      %ul.nav.nav-tabs
+        %li.active{:role => "presentation"}
+          %a{:href => "#financialData"} Financial Data
+        %li{:role => "presentation"}
+          %a{:href => "#contactDetails"} Contact Details
+      %br/
+      %a{:name => "financialData"}
+    .col-md-12
+      =column_chart [["Latest Year Income", @northern_ireland.total_income], ["Latest Year Expenditure", @northern_ireland.total_spending]]
+
+  .row.margin-top-30
+    .col-md-12
+      %ul.nav.nav-tabs
+        %li{:role => "presentation"}
+          %a{:href => "#financialData"} Financial Data
+        %li.active{:role => "presentation"}
+          %a{:href => "#contactDetails"} Contact Details
+      %br/
+      %a{:name => "contactDetails"}
+
+  .row
+    .col-md-8
+      %p
+        %b Reg charity number:
+        = @northern_ireland.reg_charity_number
+      %p
+        %b Sub charity number:
+        = @northern_ireland.sub_charity_number
+      %p
+        %b Charity name:
+        = @northern_ireland.charity_name
+      %p
+        %b Date registered:
+        = @northern_ireland.date_registered
+      %p
+        %b Status:
+        = @northern_ireland.status
+      %p
+        %b Date for financial year ending:
+        = @northern_ireland.date_for_financial_year_ending
+      %p
+        %b Total income:
+        = @northern_ireland.total_income
+      %p
+        %b Total spending:
+        = @northern_ireland.total_spending
+      %p
+        %b Charitable spending:
+        = @northern_ireland.charitable_spending
+      %p
+        %b Income generation and governance:
+        = @northern_ireland.income_generation_and_governance
+      %p
+        %b Public address:
+        = @northern_ireland.public_address
+      %p
+        %b Website:
+        = @northern_ireland.website
+      %p
+        %b Email:
+        = @northern_ireland.email
+      %p
+        %b Telephone:
+        = @northern_ireland.telephone
+      %p
+        %b Company number:
+        = @northern_ireland.company_number
+      %p
+        %b What the charity does:
+        = @northern_ireland.what_the_charity_does
+      %p
+        %b Who the charity helps:
+        = @northern_ireland.who_the_charity_helps
+      %p
+        %b How the charity works:
+        = @northern_ireland.how_the_charity_works
+
+
+    .col-md-4
+      #map{style: 'height:400px; background: #333;'}
+        :javascript
+          var map = new GMaps({
+            div: '#map',
+            lat: -12.043333,
+            lng: -77.028333
+          });
+          GMaps.geocode({
+            address: "#{@northern_ireland.public_address}",
+            callback: function(results, status) {
+              if (status == 'OK') {
+                var latlng = results[0].geometry.location;
+                map.setCenter(latlng.lat(), latlng.lng());
+                map.addMarker({
+                  lat: latlng.lat(),
+                  lng: latlng.lng()
+                });
+              } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+              }
+            }
+          });
+  / /container

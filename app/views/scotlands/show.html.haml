@@ -1,0 +1,93 @@
+#page-content-wrapper.container{:role => "main"}
+
+  .row
+    .col-md-12.page-header
+      %h2 Data for "#{@scotland.charity_name}"
+
+  .row
+    .col-md-12
+      .alert.alert-info{:role=>"alert"} Below you can find financial information and contact details for "#{@scotland.charity_name}"
+
+  .row
+    .col-md-12
+      %ul.nav.nav-tabs
+        %li.active{:role => "presentation"}
+          %a{:href => "#financialData"} Financial Data
+        %li{:role => "presentation"}
+          %a{:href => "#contactDetails"} Contact Details
+      %br/
+      %a{:name => "financialData"}
+    .col-md-12
+      =column_chart [["Latest Year Income", @scotland.most_recent_year_income], ["Latest Year Expenditure", @scotland.most_recent_year_expenditure]]
+
+  .row.margin-top-30
+    .col-md-12
+      %ul.nav.nav-tabs
+        %li{:role => "presentation"}
+          %a{:href => "#financialData"} Financial Data
+        %li.active{:role => "presentation"}
+          %a{:href => "#contactDetails"} Contact Details
+      %br/
+      %a{:name => "contactDetails"}
+
+  .row
+    .col-md-8
+      %p
+        %b Charity number:
+        = @scotland.charity_number
+      %p
+        %b Charity name:
+        = @scotland.charity_name
+      %p
+        %b Registered date:
+        = @scotland.registered_date
+      %p
+        %b Charity status:
+        = @scotland.charity_status
+      %p
+        %b Constitutional form:
+        = @scotland.constitutional_form
+      %p
+        %b Purposes:
+        = @scotland.purposes
+      %p
+        %b Beneficiaries:
+        = @scotland.beneficiaries
+      %p
+        %b Activities:
+        = @scotland.activities
+      %p
+        %b Objectives:
+        = @scotland.objectives
+      %p
+        %b Website:
+        = @scotland.website
+
+    .col-md-4
+      %p
+        %b Postcode:
+        = @scotland.postcode
+      %p
+        %b Principal office trustees address:
+        = @scotland.principal_office_trustees_address
+      #map{style: 'height:400px; background: #333;'}
+        :javascript
+          var map = new GMaps({
+            div: '#map',
+            lat: -12.043333,
+            lng: -77.028333
+          });
+          GMaps.geocode({
+            address: "#{@scotland.principal_office_trustees_address}",
+            callback: function(results, status) {
+              if (status == 'OK') {
+                var latlng = results[0].geometry.location;
+                map.setCenter(latlng.lat(), latlng.lng());
+                map.addMarker({
+                  lat: latlng.lat(),
+                  lng: latlng.lng()
+                });
+              }
+            }
+          });
+  / /container

@@ -1,0 +1,31 @@
+= simple_form_for(@england_news) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :charity_id
+    = f.input :regno
+    = f.input :subno
+    = f.input :name
+    = f.input :orgtype
+    = f.input :gd
+    = f.input :aob
+    = f.input :nhs
+    = f.input :ha_no
+    = f.input :corr
+    = f.input :add1
+    = f.input :add2
+    = f.input :add3
+    = f.input :add4
+    = f.input :add5
+    = f.input :postcode
+    = f.input :phone
+    = f.input :fax
+    = f.input :created_at
+    = f.input :updated_at
+    = f.input :fystart
+    = f.input :fyend
+    = f.input :income
+    = f.input :expend
+
+  .form-actions
+    = f.button :submit

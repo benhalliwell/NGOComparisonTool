@@ -1,0 +1,47 @@
+function toggle() {
+  $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+  });
+  return this;
+};
+
+function enableComparison(add, remove) {
+  $(".addCookie").click(function(e){
+    e.preventDefault();
+    var id = $(this).attr('id');
+
+    if ($(this).hasClass('active')) {
+      $(this).toggleClass("btn-link btn-default active");
+      $(this).html("Add To Comparison");
+      $.ajax({
+        url: remove,
+        data: {
+            id: id
+        },
+      }).success(function() {
+      });
+    } else {
+      $(this).toggleClass("btn-link btn-default active");
+      $(this).html("Remove From Comparison");
+      $.ajax({
+        url: add,
+        data: {
+            id: id
+        },
+      }).success(function() {
+        $("#compareQueue .panel-body").append( id );
+      });
+    }
+
+  });
+  return this;
+};
+
+function outputUpdate2(vol) {
+  document.querySelector('#volume2').value = 'Search within a '+ vol + ' mile radius';
+};
+
+function outputUpdate(vol) {
+  document.querySelector('#volume').value = 'Search within a '+ vol + ' mile radius';
+};

@@ -1,0 +1,155 @@
+#sidebar-wrapper
+  =form_for_filterrific @filterrific do |f|
+    %ul.sidebar-nav
+      %li.sidebar-brand
+        Advanced Search
+      %li
+        =f.text_field(:regno ,placeholder: "Charity Number", :class=>"form-control")
+      %li
+        =f.text_field(:income_g,placeholder: "Minimum Income", :class=>"form-control")
+      %li
+        =f.text_field(:income_l,placeholder: "Maximum Income", :class=>"form-control")
+      %li
+        =f.text_field(:expend_g, placeholder: "Minimum Expenditure", :class=>"form-control")
+      %li
+<<<<<<< HEAD
+        =f.text_field(:expend_l,placeholder: "Maximum Expenditure")
+      -#%li
+        =f.text_field(:Purposes, placeholder: "Purpose")
+      -#%li
+        =f.text_field(:Beneficiaries, placeholder: "Beneficiaries")
+      -#%li
+        =f.text_field(:Postcode,placeholder: "HQ Location")
+      -#%li
+        =f.text_field(:Main_Operating_Location,placeholder: "Operation Location")
+=======
+        =f.text_field(:expend_l,placeholder: "Maximum Expenditure", :class=>"form-control")
+      %li
+        =f.fields_for :postcode do |postcode_fields|
+          =postcode_fields.text_field(:postcode_d,placeholder: "HQ Location", :class=>"form-control")
+          =postcode_fields.range_field(:max_range, in: 1..100, :id => "ranger_1", :value => 50, :onInput =>"outputUpdate2(value)")
+          %output{:for => "ranger_1", :id => "volume2", :class => "location_range"}Search within a 50 mile radius
+>>>>>>> controllerFix
+      %li.margin-top-15
+        =submit_tag "Apply Filters", :class => "btn btn-default btn-block"
+      %li
+        =link_to "Reset_filters", reset_filterrific_url, :class=> "btn btn-danger btn-block"
+
+
+#page-content-wrapper.container{:role => "main"}
+  / Main jumbotron for a primary marketing message or call to action
+  .jumbotron
+    %h1 NGO Comparison Tool
+
+  .row
+    .col-md-12.col-xs-12
+      .alert.alert-info{:role=>"alert"} Here you can narrow down your choice of NGO's using the set of tools below. Simply search for a charity by its name or use the advanced filter. To compare charities, simply add them to the comparison.
+  .row
+    .col-sm-10.col-xs-9
+      =form_for_filterrific @filterrific, :html=> {:id => 'searchForm'} do |f|
+        =f.text_field(:charity_name, placeholder: "Search for charitities by name", class: 'form-control')
+
+    .col-sm-2.col-xs-3
+      =submit_tag "Search", class: 'button btn btn-primary btn-block', :form => "searchForm"
+
+  .row
+    .col-sm-2.col-sm-offset-10.col-xs-5
+      %button#menu-toggle.btn.btn-block.btn-default{:href => "#menu-toggle", "aria-label" => "Left Align"}
+        Advanced Search
+
+  .row.margin-top-15
+    .col-md-12
+      #compareQueue.panel.panel-info
+        .panel-heading
+          Comparison Queue
+        .panel-body
+          -@compareQueue.each do |i|
+            = i
+
+  .row.margin-top-30
+    .col-md-3.col-xs-2
+      =link_to "Export filtered (CSV)", engfilter2_path(format: "csv"), :class => "button btn btn-primary"
+    .col-md-3.col-xs-4
+      =link_to "View Queue", "#" , :class=> "btn btn-default btn-block"
+    .col-md-3.col-xs-4
+      =link_to "Clear Queue", england_cookie_delete_path, :class=> "btn btn-default btn-block"
+    .col-md-3.col-xs-4
+      =submit_tag "Compare (#{@compareQueue.length})", class: 'btn btn-block btn-default', :form => "indexForm"
+
+  .row.margin-top-30
+    .col-md-12.results-table
+      %table.table.table-bordered
+        %thead
+          %tr
+            %th Charity Number
+            %th Sub-Charity
+            %th Name
+            %th Compare?
+        %tbody
+          =form_tag("/engcompare2", method: "get", :id => "indexForm") do
+            -@england_news.each do |eng|
+              %tr
+                %td= eng.regno
+                %td= eng.subno
+                %td= link_to eng.name, eng
+                %td
+                  -if exists_in_cookie(eng.id)
+                    =link_to "Remove From Comparison", england_cookie_path(id: eng.id), :class=> "btn btn-link btn-block active addCookie", :id=>eng.id
+                  - else
+                    =link_to "Add To Comparison", england_cookie_path(id: eng.id), :class=> "btn btn-default btn-block addCookie", :id=>eng.id
+
+
+  .row.margin-top-30
+    .col-md-12
+      =will_paginate @englands
+
+
+  .row.margin-top-30
+    .col-md-12
+      %h2 About Us
+      %p
+        The purpose of this website is to allow users to select and compare different charities based in the UK. It uses data which are available in the public domain and which are supplied by the different charity regulators of England and Wales, england and Northern Ireland.
+
+        Users of this site can compare any group of charities that they wish. However this website is an off-shoot of a research project that examines development NGOs based in the UK. There are, therefore, more ways of exploring the international development sector on this site than for other sectors. More about information about that research project, including the sources of some of the information used in this site is available here.
+
+        We hope you find this site useful. Feedback and comments on it are welcome. Please send these to d.brockington@sheffield.ac.uk.
+
+:javascript
+  $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+  });
+  $(function(){
+    $(".addCookie").click(function(e){
+      e.preventDefault();
+      var scotid = $(this).attr('id');
+
+      if ($(this).hasClass('active')) {
+        $(this).toggleClass("btn-link btn-default active");
+        $(this).html("Add To Comparison");
+        $.ajax({
+          url: "#{england_cookie_remove_path}",
+          data: {
+              id: scotid
+          },
+        }).success(function() {
+        });
+
+      } else {
+        $(this).toggleClass("btn-link btn-default active");
+        $(this).html("Remove From Comparison");
+        $.ajax({
+          url: "#{england_cookie_path}",
+          data: {
+              id: scotid
+          },
+        }).success(function() {
+          $("#compareQueue .panel-body").append( scotid );
+        });
+      }
+
+    })
+  })
+  function outputUpdate2(vol) {
+    document.querySelector('#volume2').value = 'Search within a '+ vol + ' mile radius';
+  }

@@ -1,0 +1,13 @@
+development:
+  adapter: sqlite3
+  database: db/development.sqlite3
+  host: localhost
+  min_messages: warning
+  username:
+
+test:
+  adapter: sqlite3
+  database: db/test.sqlite3
+  host: localhost
+  min_messages: warning
+  username:

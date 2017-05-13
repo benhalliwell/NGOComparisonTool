@@ -1,0 +1,10 @@
+= simple_form_for(@laura_filter) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :charity_number
+    = f.input :subno
+    = f.input :name
+
+  .form-actions
+    = f.button :submit

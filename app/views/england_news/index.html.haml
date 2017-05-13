@@ -1,0 +1,135 @@
+#sidebar-wrapper
+  =form_for_filterrific @filterrific do |f|
+    %ul.sidebar-nav
+      %li.sidebar-brand
+        Advanced Search
+      %li
+        =f.text_field(:regno ,placeholder: "Charity Number", :class=>"form-control")
+      %li
+        =f.select(:income_range, ["Select Income Range", "£0 to £10,000","£10,000 to £100,000","£100,000 to £500,000", "£500,000 to £1,000,000", "£1,000,000 to £10,000,000", "More than £10,000,000"], {}, :class=>"form-control")
+      %li
+        =f.text_field(:income_g,placeholder: "Minimum Income", :class=>"form-control")
+      %li
+        =f.text_field(:income_l,placeholder: "Maximum Income", :class=>"form-control")
+      %li
+        =f.select(:income_range, ["Select Income Range", "£0 to £10,000","£10,000 to £100,000","£100,000 to £500,000", "£500,000 to £1,000,000", "£1,000,000 to £10,000,000", "More than £10,000,000"], {}, :class=>"form-control")
+      %li
+        =f.text_field(:expend_g, placeholder: "Minimum Expenditure", :class=>"form-control")
+      %li
+        =f.text_field(:expend_l,placeholder: "Maximum Expenditure", :class=>"form-control")
+      %li
+        =f.fields_for :postcode do |postcode_fields|
+          =postcode_fields.text_field(:postcode_d,placeholder: "HQ Location", :class=>"form-control")
+          =postcode_fields.range_field(:max_range, in: 1..100, :id => "ranger_1", :value => 50, :onInput =>"outputUpdate2(value)")
+          %output{:for => "ranger_1", :id => "volume2", :class => "location_range"}Search within a 50 mile radius
+      %li
+        =f.fields_for :ngos900 do |g|
+          =g.label(:ngo900, "900 NGOs in SIID Study", :class=>"inlineCheckbox1")
+          =g.radio_button(:ngos900, :class=>"inlineCheckbox1", :value=>"")
+      %li.margin-top-15
+        =submit_tag "Apply Filters", :class => "btn btn-default btn-block"
+      %li
+        =link_to "Reset Filters", reset_filterrific_url, :class=> "btn btn-danger btn-block"
+
+
+#page-content-wrapper.container{:role => "main"}
+  / Main jumbotron for a primary marketing message or call to action
+  .jumbotron
+    %h1 NGO Comparison Tool
+    %p<
+      Searching for charities from the&#160;
+      %a{:href => 'http://apps.charitycommission.gov.uk/showcharity/registerofcharities/RegisterHomePage.aspx'}> English Charity Commission
+
+  .row
+    .col-md-12.col-xs-12
+      .alert.alert-info{:role=>"alert"} Here you can narrow down your choice of NGO's using the set of tools below. Simply search for a charity by its name or use the advanced filter. To compare charities, simply add them to the comparison.
+
+  .row
+    .col-sm-9.col-xs-9
+      =form_for_filterrific @filterrific, :html=> {:id => 'searchForm'} do |f|
+        =f.text_field(:charity_name, placeholder: "Search for charitities by name", class: 'form-control')
+
+    .col-sm-3.col-xs-3
+      =submit_tag "Search", class: 'button btn btn-primary btn-block', :form => "searchForm"
+
+  .row
+    .col-sm-6.col-xs-12
+      %button#menu-toggle.btn.btn-block.btn-default{:href => "#menu-toggle", "aria-label" => "Left Align"}
+        %span.glyphicon.glyphicon-align-justify{"aria-hidden" => "true"}
+        Show/Hide Advanced Filters
+    .col-sm-6.col-xs-12
+      %button.btn.btn-block.btn-default{"aria-controls" => "collapseExample", "aria-expanded" => "false", "data-target" => "#compareQueue", "data-toggle" => "collapse", :type => "button"}
+        %span.glyphicon.glyphicon-th-list{"aria-hidden" => "true"}
+        Show/Hide The Comparison Queue
+
+
+  .row.margin-top-15
+    .col-md-12
+      #compareQueue.panel.panel-info.collapse
+        .panel-heading
+          Comparison Queue
+        .panel-body
+          -@compareQueue.each do |i|
+            = i
+
+  .row.margin-top-30
+    .col-md-3.col-xs-6
+      =link_to "Export filtered (CSV)", engfilter_path(format: "csv"), :class => "btn btn-default btn-block"
+    .col-md-3.col-xs-6
+      =submit_tag  "Compare All", :form => "indexForm", :type => "submit", :class=> "btn btn-default btn-block"
+    .col-md-3.col-xs-6
+      =link_to "Clear Queue", england_cookie_delete_path, :class=> "btn btn-default btn-block"
+    .col-md-3.col-xs-6
+      =link_to "Compare (#{@compareQueue.length})", engcompare_path, class: 'btn btn-block btn-default', :form => "indexForm"
+
+  .row.margin-top-30
+    .col-md-12.results-table
+      %table.table.table-bordered
+        %thead
+          %tr
+            %th Charity Number
+            %th Sub-Charity
+            %th Name
+            %th Compare?
+        %tbody
+          =form_tag("/engcompare_all", method: "get", :id => "indexForm") do
+            -@england_news.each do |eng|
+              %tr
+                %td= eng.regno
+                %td= eng.subno
+                %td= link_to eng.name, eng
+                %td
+                  - if exists_in_cookie(eng.id)
+                    =link_to "Remove From Comparison", england_cookie_path(id: eng.id), :class=> "btn btn-link btn-block active addCookie", :id=>eng.id
+                  - else
+                    =link_to "Add To Comparison", england_cookie_path(id: eng.id), :class=> "btn btn-default btn-block addCookie", :id=>eng.id
+                    %input{:name => "id[]", :type => "hidden", :value => eng.id}/
+
+  .row.margin-top-30
+    .col-md-3.col-xs-6
+      =link_to "Export filtered (CSV)", engfilter_path(format: "csv"), :class => "btn btn-default btn-block"
+    .col-md-3.col-xs-6
+      =submit_tag  "Compare All", :form => "indexForm", :type => "submit", :class=> "btn btn-default btn-block"
+    .col-md-3.col-xs-6
+      =link_to "Clear Queue", england_cookie_delete_path, :class=> "btn btn-default btn-block"
+    .col-md-3.col-xs-6
+      =link_to "Compare (#{@compareQueue.length})", engcompare_path, class: 'btn btn-block btn-default', :form => "indexForm"
+
+
+  .row.margin-top-30
+    .col-md-12
+      =will_paginate @englands
+
+
+  .row.margin-top-30
+    .col-md-12
+      %h2 About Us
+      %p
+        The purpose of this website is to allow users to select and compare different charities based in the UK. It uses data which are available in the public domain and which are supplied by the different charity regulators of England and Wales, england and Northern Ireland.
+
+        Users of this site can compare any group of charities that they wish. However this website is an off-shoot of a research project that examines development NGOs based in the UK. There are, therefore, more ways of exploring the international development sector on this site than for other sectors. More about information about that research project, including the sources of some of the information used in this site is available here.
+
+        We hope you find this site useful. Feedback and comments on it are welcome. Please send these to d.brockington@sheffield.ac.uk.
+
+:javascript
+  $('#wrapper').toggleClass('toggled');

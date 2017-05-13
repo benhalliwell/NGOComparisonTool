@@ -1,0 +1,344 @@
+<html lang='en'>
+<head><base href='http://localhost:3000' />
+
+<meta charset='utf-8'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='width=device-width, initial-scale=1' name='viewport'>
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta content='' name='description'>
+<meta content='' name='author'>
+<link rel="shortcut icon" type="image/x-icon" href="/assets/favicon-52ba6337c5ecedf8819db90aaa20e7dd6a7250fff6f991b263d7d09bd28d7e29.ico" />
+<title>NGO Comparison Tool</title>
+<!-- Bootstrap core CSS -->
+<script src="/assets/application-7dc103e667530b1eba3052fe66072c94edc8773b1e22ec9a970076f1a8ea3cc0.js"></script>
+<script src="/assets/comparisons-8fb59ccbaa3fb8b144bdc0868dea9556d8eaad377d3c745f8aebd441f80a3be8.js"></script>
+<script>
+  $(function(){
+    enableComparison('/scotland_cookie','/scotland_cookie_remove');
+    toggle();
+  });
+</script>
+<link rel="stylesheet" media="all" href="/assets/application-c9105722849c81ab851f79effd1f81a5479e69649dc8b42c2cf59b02d5696faf.css" />
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src='https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js'></script>
+<script src='https://oss.maxcdn.com/respond/1.4.2/respond.min.js'></script>
+<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyATlM152jGMuH88wfsXYV31am3ojUKvv2M'></script>
+</head>
+<body>
+<!-- Fixed navbar -->
+<nav class='navbar navbar-inverse navbar-fixed-top'>
+<div class='container'>
+<div class='navbar-header'>
+<button class='navbar-toggle collapsed' data-target='#navbar' data-toggle='collapse'>
+<span class='sr-only'>Toggle navigation</span>
+<span class='icon-bar'></span>
+<span class='icon-bar'></span>
+<span class='icon-bar'></span>
+</button>
+<a class='navbar-brand' href='http://www.example.com/'>NGO Comparison Tool</a>
+</div>
+<!-- collapse -->
+<div class='collapse-navbar' id='navbar'>
+<ul class='nav navbar-nav'>
+<!-- %li{:class => "active"}= link_to 'NGO Comparison Tool', root_url -->
+<li class=''><a href="http://www.example.com/scotsfilter">Scotland</a></li>
+<li class=''><a href="http://www.example.com/northern_irelandfilter">Northern Ireland</a></li>
+<li class=''><a href="http://www.example.com/engfilter">England</a></li>
+<li class=''><a href="http://www.example.com/ngofilter">900 Development NGOs</a></li>
+</ul>
+</div>
+<!-- /.nav-collapse -->
+<!-- Main jumbotron for a primary marketing message or call to action -->
+</div>
+</nav>
+<div class='container'>
+<div id='wrapper'>
+<div data-intro='You can select different parameters here to filter the search' data-position='right' data-step='3' id='sidebar-wrapper'>
+<form id="filterrific_filter" class="new_filterrific" action="/scotlands" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="&#x2713;" /><ul class='sidebar-nav'>
+<li class='sidebar-brand'>
+Advanced Search
+</li>
+<li>
+<input placeholder="Charity Number" class="form-control" type="text" name="filterrific[charity_number]" id="filterrific_charity_number" />
+</li>
+<li>
+<select class="form-control" name="filterrific[income_range]" id="filterrific_income_range"><option value="Select Income Range">Select Income Range</option>
+<option value="£0 to £10,000">£0 to £10,000</option>
+<option value="£10,000 to £100,000">£10,000 to £100,000</option>
+<option value="£100,000 to £500,000">£100,000 to £500,000</option>
+<option value="£500,000 to £1,000,000">£500,000 to £1,000,000</option>
+<option value="£1,000,000 to £10,000,000">£1,000,000 to £10,000,000</option>
+<option value="More than £10,000,000">More than £10,000,000</option></select>
+</li>
+<li>
+<input placeholder="Minimum Income" class="form-control" type="text" name="filterrific[most_recent_year_income_g]" id="filterrific_most_recent_year_income_g" />
+</li>
+<li>
+<input placeholder="Maximum Income" class="form-control" type="text" name="filterrific[most_recent_year_income_l]" id="filterrific_most_recent_year_income_l" />
+</li>
+<li>
+<select class="form-control" name="filterrific[income_range]" id="filterrific_income_range"><option value="Select Income Range">Select Income Range</option>
+<option value="£0 to £10,000">£0 to £10,000</option>
+<option value="£10,000 to £100,000">£10,000 to £100,000</option>
+<option value="£100,000 to £500,000">£100,000 to £500,000</option>
+<option value="£500,000 to £1,000,000">£500,000 to £1,000,000</option>
+<option value="£1,000,000 to £10,000,000">£1,000,000 to £10,000,000</option>
+<option value="More than £10,000,000">More than £10,000,000</option></select>
+</li>
+<li>
+<input placeholder="Minimum Expenditure" class="form-control" type="text" name="filterrific[most_recent_year_expenditure_g]" id="filterrific_most_recent_year_expenditure_g" />
+</li>
+<li>
+<input placeholder="Maximum Expenditure" class="form-control" type="text" name="filterrific[most_recent_year_expenditure_l]" id="filterrific_most_recent_year_expenditure_l" />
+</li>
+<li>
+<select class="form-control" name="filterrific[purposes]" id="filterrific_purposes"><option value="Select Purpose">Select Purpose</option>
+<option value="Education">Education</option>
+<option value="Religion">Religion</option>
+<option value="Disability">Disability</option>
+<option value="Arts">Arts</option>
+<option value="Health">Health</option>
+<option value="Community">Community</option>
+<option value="Science">Science</option>
+<option value="Recreation">Recreation</option>
+<option value="Poverty">Poverty</option></select>
+</li>
+<li>
+<select class="form-control" name="filterrific[beneficiaries]" id="filterrific_beneficiaries"><option value="Select Beneficiaries">Select Beneficiaries</option>
+<option value="Youth">Youth</option>
+<option value="Community">Community</option>
+<option value="The Elderly">The Elderly</option>
+<option value="The Disabled">The Disabled</option>
+<option value="Other">Other</option></select>
+</li>
+<li>
+<input placeholder="HQ Location" class="form-control" type="text" name="filterrific[postcode][postcode_d]" id="filterrific_postcode_postcode_d" />
+<input id="ranger_1" value="50" onInput="outputUpdate2(value)" min="1" max="100" type="range" name="filterrific[postcode][max_range]" />
+<output class='location_range' for='ranger_1' id='volume2'>Search within a 50 mile radius</output>
+</li>
+<li>
+<input placeholder="Operation Location" class="form-control" type="text" name="filterrific[main_operating_location][main]" id="filterrific_main_operating_location_main" />
+<input id="ranger" value="50" onInput="outputUpdate(value)" min="1" max="100" type="range" name="filterrific[main_operating_location][max_range]" />
+<output class='location_range' for='ranger' id='volume'>Search within a 50 mile radius</output>
+</li>
+<li>
+<label class="inlineCheckbox1" for="filterrific_ngos900_ngo900">900 NGOs in SIID Study</label>
+<input type="radio" value="{:class=&gt;&quot;inlineCheckbox1&quot;, :value=&gt;&quot;&quot;}" name="filterrific[ngos900][ngos900]" id="filterrific_ngos900_ngos900_classinlinecheckbox1_value" />
+</li>
+<li class='margin-top-15'>
+<input type="submit" name="commit" value="Apply Filters" class="btn btn-default btn-block" data-disable-with="Apply Filters" />
+</li>
+<li>
+<a class="btn btn-danger btn-block" href="/scotlands?filterrific%5Breset_filterrific%5D=true">Reset Filters</a>
+</li>
+</ul>
+</form></div>
+<div class='container' id='page-content-wrapper' role='main'>
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class='jumbotron'>
+<h1>NGO Comparison Tool</h1>
+<p>Searching for charities from the&#160;<a href='https://www.oscr.org.uk'>Scottish Charity Register (OSCR)</a></p>
+</div>
+<div class='row'>
+<div class='col-md-12 col-xs-12'>
+<div class='alert alert-info' role='alert'>
+<p>
+Here you can narrow down your choice of NGO's using the set of tools below. Simply search for a charity by its name or use the advanced filter. To compare charities, simply add them to the comparison.
+</p>
+<p>
+<a onclick="introJs().start(); return false" class="btn btn-default btn-sm" href="">Show me how to use the site</a>
+</p>
+</div>
+</div>
+</div>
+<div class='row' data-intro='Use this search bar to search charities by name' data-step='1'>
+<div class='col-sm-9 col-xs-9'>
+<form id="searchForm" class="new_filterrific" action="/scotlands" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="&#x2713;" /><input placeholder="Search for charitities by name" class="form-control" type="text" name="filterrific[charity_name]" id="filterrific_charity_name" />
+</form></div>
+<div class='col-sm-3 col-xs-3'>
+<input type="submit" name="commit" value="Search" class="button btn btn-primary btn-block" form="searchForm" data-disable-with="Search" />
+</div>
+</div>
+<div class='row'>
+<div class='col-sm-6 col-xs-12' data-intro='Click here to display or hide the advanced filters' data-step='2'>
+<button aria-label='Left Align' class='btn btn-block btn-default' href='#menu-toggle' id='menu-toggle'>
+<span aria-hidden='true' class='glyphicon glyphicon-align-justify'></span>
+Show/Hide Advanced Filters
+</button>
+</div>
+<div class='col-sm-6 col-xs-12'>
+<button aria-controls='collapseExample' aria-expanded='false' class='btn btn-block btn-default' data-target='#compareQueue' data-toggle='collapse' type='button'>
+<span aria-hidden='true' class='glyphicon glyphicon-th-list'></span>
+Show/Hide The Comparison Queue
+</button>
+</div>
+</div>
+<div class='row margin-top-15'>
+<div class='col-md-12'>
+<div class='panel panel-info collapse' id='compareQueue'>
+<div class='panel-heading'>
+Comparison Queue
+</div>
+<div class='panel-body'>
+</div>
+</div>
+</div>
+</div>
+<div class='row margin-top-20'>
+<div class='col-md-3 col-xs-6 margin-top-5' data-intro='Cick here to download the filtered charities in CSV format' data-step='8'>
+<a class="btn btn-default btn-block" href="/scotlands.csv">Export filtered (CSV)</a>
+</div>
+<div class='col-md-3 col-xs-6 margin-top-5' data-intro='Cick here to compare all the filtered charities' data-step='7'>
+<input type="submit" name="commit" value="Compare All" form="indexForm" class="btn btn-default btn-block" data-disable-with="Compare All" />
+</div>
+<div class='col-md-3 col-xs-6 margin-top-5' data-intro='Cick here to remove all the charities from the comparison queue' data-step='6'>
+<a class="btn btn-default btn-block" href="/scotland_cookie_delete">Clear Queue</a>
+</div>
+<div class='col-md-3 col-xs-6 margin-top-5' data-intro='Once you add some chairities to the queue, click here to compare them' data-step='5'>
+<a class="btn btn-block btn-default" form="indexForm" href="/scotscompare">Compare (0)</a>
+</div>
+</div>
+<div class='row margin-top-10'>
+<div class='col-md-12 results-table' data-intro='Here you will see all the charities that match your search parameters. Click on the &amp;quot;Add to Compare&amp;quot; button to add that charity to the comparison queue' data-position='top' data-step='4'>
+<table class='table table-bordered'>
+<thead>
+<tr>
+<th>Charity Number</th>
+<th>Name</th>
+<th>Compare?</th>
+</tr>
+</thead>
+<tbody>
+<form id="indexForm" action="/scotscompare_all" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="&#x2713;" />
+<tr>
+<td>MyString114 </td>
+<td><a href="/scotlands/114">MyString114 </a></td>
+<td>
+<a class="btn btn-default btn-block addCookie" id="MyString114 " href="/scotland_cookie?id=MyString114+">Add To Comparison</a>
+<input name='id[]' type='hidden' value='MyString114 '>
+</td>
+</tr>
+<tr>
+<td>MyString115 </td>
+<td><a href="/scotlands/115">MyString115 </a></td>
+<td>
+<a class="btn btn-default btn-block addCookie" id="MyString115 " href="/scotland_cookie?id=MyString115+">Add To Comparison</a>
+<input name='id[]' type='hidden' value='MyString115 '>
+</td>
+</tr>
+<tr>
+<td>MyString116 </td>
+<td><a href="/scotlands/116">MyString116 </a></td>
+<td>
+<a class="btn btn-default btn-block addCookie" id="MyString116 " href="/scotland_cookie?id=MyString116+">Add To Comparison</a>
+<input name='id[]' type='hidden' value='MyString116 '>
+</td>
+</tr>
+<tr>
+<td>MyString117 </td>
+<td><a href="/scotlands/117">MyString117 </a></td>
+<td>
+<a class="btn btn-default btn-block addCookie" id="MyString117 " href="/scotland_cookie?id=MyString117+">Add To Comparison</a>
+<input name='id[]' type='hidden' value='MyString117 '>
+</td>
+</tr>
+<tr>
+<td>MyString118 </td>
+<td><a href="/scotlands/118">MyString118 </a></td>
+<td>
+<a class="btn btn-default btn-block addCookie" id="MyString118 " href="/scotland_cookie?id=MyString118+">Add To Comparison</a>
+<input name='id[]' type='hidden' value='MyString118 '>
+</td>
+</tr>
+<tr>
+<td>MyString119 </td>
+<td><a href="/scotlands/119">MyString119 </a></td>
+<td>
+<a class="btn btn-default btn-block addCookie" id="MyString119 " href="/scotland_cookie?id=MyString119+">Add To Comparison</a>
+<input name='id[]' type='hidden' value='MyString119 '>
+</td>
+</tr>
+<tr>
+<td>MyString120 </td>
+<td><a href="/scotlands/120">MyString120 </a></td>
+<td>
+<a class="btn btn-default btn-block addCookie" id="MyString120 " href="/scotland_cookie?id=MyString120+">Add To Comparison</a>
+<input name='id[]' type='hidden' value='MyString120 '>
+</td>
+</tr>
+<tr>
+<td>MyString121 </td>
+<td><a href="/scotlands/121">MyString121 </a></td>
+<td>
+<a class="btn btn-default btn-block addCookie" id="MyString121 " href="/scotland_cookie?id=MyString121+">Add To Comparison</a>
+<input name='id[]' type='hidden' value='MyString121 '>
+</td>
+</tr>
+<tr>
+<td>MyString122 </td>
+<td><a href="/scotlands/122">MyString122 </a></td>
+<td>
+<a class="btn btn-default btn-block addCookie" id="MyString122 " href="/scotland_cookie?id=MyString122+">Add To Comparison</a>
+<input name='id[]' type='hidden' value='MyString122 '>
+</td>
+</tr>
+<tr>
+<td>MyString123 </td>
+<td><a href="/scotlands/123">MyString123 </a></td>
+<td>
+<a class="btn btn-default btn-block addCookie" id="MyString123 " href="/scotland_cookie?id=MyString123+">Add To Comparison</a>
+<input name='id[]' type='hidden' value='MyString123 '>
+</td>
+</tr>
+</form>
+
+</tbody>
+</table>
+</div>
+</div>
+<div class='row'>
+<div class='col-md-3 col-xs-6 margin-top-5'>
+<a class="btn btn-default btn-block" href="/scotlands.csv">Export filtered (CSV)</a>
+</div>
+<div class='col-md-3 col-xs-6 margin-top-5'>
+<input type="submit" name="commit" value="Compare All" form="indexForm" class="btn btn-default btn-block" data-disable-with="Compare All" />
+</div>
+<div class='col-md-3 col-xs-6 margin-top-5'>
+<a class="btn btn-default btn-block" href="/scotland_cookie_delete">Clear Queue</a>
+</div>
+<div class='col-md-3 col-xs-6 margin-top-5'>
+<a class="btn btn-block btn-default" form="indexForm" href="/scotscompare">Compare (0)</a>
+</div>
+</div>
+<div class='row margin-top-30'>
+<div class='col-md-12'>
+
+</div>
+</div>
+<div class='row margin-top-30'>
+<div class='col-md-12'>
+<h2>About Us</h2>
+<p>
+The purpose of this website is to allow users to select and compare different charities based in the UK. It uses data which are available in the public domain and which are supplied by the different charity regulators of England and Wales, Scotland and Northern Ireland.
+Users of this site can compare any group of charities that they wish. However this website is an off-shoot of a research project that examines development NGOs based in the UK. There are, therefore, more ways of exploring the international development sector on this site than for other sectors. More about information about that research project, including the sources of some of the information used in this site is available here.
+We hope you find this site useful. Feedback and comments on it are welcome. Please send these to d.brockington@sheffield.ac.uk.
+</p>
+</div>
+</div>
+</div>
+<script>
+  $('#wrapper').toggleClass('toggled');
+</script>
+
+</div>
+</div>
+<footer id='footer'>
+<div class='container'>
+<p>
+&copy;2017
+<a target="_blank" title="Goto the epiGenesys website" href="https://www.epigenesys.org.uk">epiGenesys</a>
+</p>
+</div>
+</footer>
+</body>
+</html>

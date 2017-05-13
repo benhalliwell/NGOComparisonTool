@@ -1,0 +1,138 @@
+#sidebar-wrapper
+  =form_for_filterrific @filterrific do |f|
+    %ul.sidebar-nav
+      %li.sidebar-brand
+        Advanced Search
+      %li
+        =f.text_field(:reg_charity_number, placeholder: "Charity Number", :class=>"form-control")
+      %li
+        =f.select(:income_range, ["Select Income Range", "£0 to £10,000","£10,000 to £100,000","£100,000 to £500,000", "£500,000 to £1,000,000", "£1,000,000 to £10,000,000", "More than £10,000,000"], {}, :class=>"form-control")
+      %li
+        =f.text_field(:total_income_g, placeholder: "Minimum Income", :class=>"form-control")
+      %li
+        =f.text_field(:total_income_l, placeholder: "Maximum Income", :class=>"form-control")
+      %li
+        =f.select(:income_range, ["Select Income Range", "£0 to £10,000","£10,000 to £100,000","£100,000 to £500,000", "£500,000 to £1,000,000", "£1,000,000 to £10,000,000", "More than £10,000,000"], {}, :class=>"form-control")
+      %li
+        =f.text_field(:total_spending_g, placeholder:"Minimum Expenditure", :class=>"form-control")
+      %li
+        =f.text_field(:total_spending_l, placeholder:"Maximum Expenditure", :class=>"form-control")
+      %li
+        =f.select(:what_the_charity_does, ["Select Purpose", "Education", "Health", "Youth", "Community", "Sport", "Poverty", "Religion","Arts","Science", "Human Rights", "Environmental Protection"], {}, :class=>"form-control")
+      %li
+        =f.select(:who_the_charity_helps, ["Select Beneficiaries", "Addictions","Asylum Seekers","Adult Training","Carers","Preschool (0-5 year olds)","Children (5-13 year olds)","Youth (14-25 year olds)","Ex-Offenders","General Public", "Homelessness","Learning Disabilities","Older People", "Developing Countries","Parents"], {}, :class=>"form-control")
+      %li
+        =f.fields_for :public_address do |address_fields|
+          =address_fields.text_field(:pub_address, placeholder: "HQ Location", :class=>"form-control")
+          =address_fields.range_field(:max_range, in: 1..100, :id => "ranger", :value =>50, :onInput =>"outputUpdate(value)")
+          %output{:for => "ranger", :id => "volume", :class => "location_range"}Search within a 50 mile radius
+      %li
+        =f.fields_for :ngos900 do |g|
+          =g.label(:ngo900, "900 NGOs in SIID Study", :class=>"inlineCheckbox1")
+          =g.radio_button(:ngos900, :class=>"inlineCheckbox1", :value=>"")
+      %li.margin-top-15
+        =submit_tag "Apply Filters", :class => "btn btn-default btn-block"
+      %li
+        =link_to "Reset_filters", reset_filterrific_url, :class=> "btn btn-danger btn-block"
+
+
+#page-content-wrapper.container{:role => "main"}
+  / Main jumbotron for a primary marketing message or call to action
+  .jumbotron
+    %h1 NGO Comparison Tool
+    %p<
+      Searching for charities from the&#160;
+      %a{:href => 'http://www.charitycommissionni.org.uk'}> Charity Commission for Northern Ireland
+  .row
+    .col-md-12.col-xs-12
+      .alert.alert-info{:role=>"alert"} Here you can narrow down your choice of NGO's using the set of tools below. Simply search for a charity by its name or use the advanced filter. To compare charities, simply add them to the comparison.
+
+  .row
+    .col-sm-9.col-xs-9
+      =form_for_filterrific @filterrific, :html=> {:id => 'searchForm'} do |f|
+        =f.text_field(:charity_name, placeholder: "Search for charitities by name", class: 'form-control')
+
+    .col-sm-3.col-xs-3
+      =submit_tag "Search", class: 'button btn btn-primary btn-block', :form => "searchForm"
+
+  .row
+    .col-sm-6.col-xs-12
+      %button#menu-toggle.btn.btn-block.btn-default{:href => "#menu-toggle", "aria-label" => "Left Align"}
+        %span.glyphicon.glyphicon-align-justify{"aria-hidden" => "true"}
+        Show/Hide Advanced Filters
+    .col-sm-6.col-xs-12
+      %button.btn.btn-block.btn-default{"aria-controls" => "collapseExample", "aria-expanded" => "false", "data-target" => "#compareQueue", "data-toggle" => "collapse", :type => "button"}
+        %span.glyphicon.glyphicon-th-list{"aria-hidden" => "true"}
+        Show/Hide The Comparison Queue
+
+
+  .row.margin-top-15
+    .col-md-12
+      #compareQueue.panel.panel-info.collapse
+        .panel-heading
+          Comparison Queue
+        .panel-body
+          -@compareQueue.each do |i|
+            = i
+
+  .row.margin-top-20
+    .col-md-3.col-xs-12.margin-top-5
+      =link_to "Export filtered (CSV)", northern_irelands_path(format: "csv"), :class => "btn btn-default btn-block"
+    .col-md-3.col-xs-12.margin-top-5
+      =submit_tag  "Compare All", :form => "indexForm", :type => "submit", :class=> "btn btn-default btn-block"
+    .col-md-3.col-xs-12.margin-top-5
+      =link_to "Clear Queue", ireland_cookie_delete_path, :class=> "btn btn-default btn-block"
+    .col-md-3.col-xs-12.margin-top-5
+      =link_to "Compare (#{@compareQueue.length})", northern_irelandcompare_path, class: 'btn btn-block btn-default', :form => "indexForm"
+
+
+  .row.margin-top-10
+    .col-md-12.results-table
+      %table.table.table-bordered
+        %thead
+          %tr
+            %th Charity Number
+            %th Name
+            %th Compare?
+        %tbody
+          =form_tag("/northern_irelandcompare_all", method: "get", :id => "indexForm") do
+            -@northern_irelands.each do |ni|
+              %tr
+                %td= ni.reg_charity_number
+                %td= link_to ni.charity_name, ni
+                %td
+                  -if exists_in_cookie(ni.reg_charity_number)
+                    =link_to "Remove From Comparison", ireland_cookie_path(id: ni.reg_charity_number), :class=> "btn btn-link btn-block active addCookie", :id=>ni.reg_charity_number
+                  - else
+                    =link_to "Add To Comparison", ireland_cookie_path(id: ni.reg_charity_number), :class=> "btn btn-default btn-block addCookie", :id=>ni.reg_charity_number
+                    %input{:name => "id[]", :type => "hidden", :value => ni.reg_charity_number}/
+
+
+  .row.margin-top-20
+    .col-md-3.col-xs-12.margin-top-5
+      =link_to "Export filtered (CSV)", northern_irelands_path(format: "csv"), :class => "btn btn-default btn-block"
+    .col-md-3.col-xs-12.margin-top-5
+      =submit_tag  "Compare All", :form => "indexForm", :type => "submit", :class=> "btn btn-default btn-block"
+    .col-md-3.col-xs-12.margin-top-5
+      =link_to "Clear Queue", ireland_cookie_delete_path, :class=> "btn btn-default btn-block"
+    .col-md-3.col-xs-12.margin-top-5
+      =link_to "Compare (#{@compareQueue.length})", northern_irelandcompare_path, class: 'btn btn-block btn-default', :form => "indexForm"
+
+
+  .row.margin-top-30
+    .col-md-12
+      =will_paginate @northern_irelands
+
+
+  .row.margin-top-30
+    .col-xs-12
+      %h2 About Us
+      %p
+        The purpose of this website is to allow users to select and compare different charities based in the UK. It uses data which are available in the public domain and which are supplied by the different charity regulators of England and Wales, Scotland and Northern Ireland.
+
+        Users of this site can compare any group of charities that they wish. However this website is an off-shoot of a research project that examines development NGOs based in the UK. There are, therefore, more ways of exploring the international development sector on this site than for other sectors. More about information about that research project, including the sources of some of the information used in this site is available here.
+
+        We hope you find this site useful. Feedback and comments on it are welcome. Please send these to d.brockington@sheffield.ac.uk.
+
+:javascript
+  $('#wrapper').toggleClass('toggled');

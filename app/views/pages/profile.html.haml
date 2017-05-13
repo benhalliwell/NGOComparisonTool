@@ -1,0 +1,89 @@
+!!!
+%html{:lang => "en"}
+  %head
+    =content_for(:title, "Charity Profile Page")
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge", "http-equiv" => "X-UA-Compatible"}/
+    %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}/
+    / The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags
+    %meta{:content => "", :name => "description"}/
+    %meta{:content => "", :name => "author"}/
+    %link{:href => "../../favicon.ico", :rel => "icon"}/
+    %title Charity Name - Charity Comparison Tool
+    / Bootstrap core CSS
+    %link{:href => "css/bootstrap.min.css", :rel => "stylesheet"}/
+    / Bootstrap theme
+    %link{:href => "css/bootstrap-theme.min.css", :rel => "stylesheet"}/
+    / IE10 viewport hack for Surface/desktop Windows 8 bug
+    %link{:href => "css/ie10-viewport-bug-workaround.css", :rel => "stylesheet"}/
+    / Custom styles for this template
+    %link{:href => "theme.css", :rel => "stylesheet"}/
+    / Just for debugging purposes. Don't actually copy these 2 lines!
+    /[if lt IE 9] <script src="../../assets/js/ie8-responsive-file-warning.js"></script>
+    %script{:src => "js/ie-emulation-modes-warning.js"}
+    / HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
+    /[if lt IE 9]
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  %body
+    .container
+      / Fixed navbar
+      %nav.navbar.navbar-inverse.navbar-fixed-top
+        .container
+          #navbar.navbar-collapse.collapse
+            %ul.nav.navbar-nav
+              %li
+                %a{:href => "filter"} Charity Comparison Tool
+          / /.nav-collapse
+      / Main jumbotron for a primary marketing message or call to action
+      .jumbotron
+        %h1 Data for "Charity Name"
+        %p Below you can find financial information and contact details for "Charity Name"
+      .row
+        %ul.nav.nav-tabs
+          %li.active{:role => "presentation"}
+            %a{:href => "#financialData"} Financial Data
+          %li{:role => "presentation"}
+            %a{:href => "#contactDetails"} Contact Details
+        %br/
+        %a{:name => "financialData"}
+        %div
+          =image_tag "graph.jpg"
+      %br/
+      .row
+        %ul.nav.nav-tabs
+          %li{:role => "presentation"}
+            %a{:href => "#financialData"} Financial Data
+          %li.active{:role => "presentation"}
+            %a{:href => "#contactDetails"} Contact Details
+        %br/
+        %a{:name => "contactDetails"}
+      .row
+        .col-md-4
+          %address
+            %strong Twitter, Inc.
+            %br/
+            1355 Market Street, Suite 900
+            %br/
+            San Francisco, CA 94103
+            %br/
+            %abbr{:title => "Phone"} P:
+            (123) 456-7890
+          %address
+            %strong Full Name
+            %br/
+            %a{:href => "mailto:#"} first.last@example.com
+        .col-md-8{:style => "text-align: center;"}
+          %iframe{:allowfullscreen => "", :frameborder => "0", :height => "450", :src => "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d9519.57715330425!2d-1.4879469!3d53.3809409!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc9ec1e8b34c33663!2sUniversidad+de+Sheffield!5e0!3m2!1ses!2suk!4v1488290075941", :style => "border:0", :width => "600"}
+    / /container
+    /
+      Bootstrap core JavaScript
+      \==================================================
+    / Placed at the end of the document so the pages load faster
+    %script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"}
+    :javascript
+      window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+    %script{:src => "js/bootstrap.min.js"}
+    %script{:src => "js/docs.min.js"}
+    / IE10 viewport hack for Surface/desktop Windows 8 bug
+    %script{:src => "js/ie10-viewport-bug-workaround.js"}

@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Charity number:
+  = @laura_filter.charity_number
+%p
+  %b Subno:
+  = @laura_filter.subno
+%p
+  %b Name:
+  = @laura_filter.name
+
+= link_to 'Edit', edit_laura_filter_path(@laura_filter)
+\|
+= link_to 'Back', laura_filters_path

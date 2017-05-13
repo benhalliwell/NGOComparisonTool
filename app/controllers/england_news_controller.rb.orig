@@ -1,0 +1,171 @@
+class EnglandNewsController < ApplicationController
+  before_action :set_england_news, only: [:show, :edit, :update, :destroy]
+  layout 'application'
+
+  helper_method :exists_in_cookie
+
+  # GET /england_news
+  def index
+    @england_news = EnglandNew.all
+
+    indexlist = []
+    @england_news.each do |a|
+      if a.fystart.to_s.include? "2016"
+        indexlist.push(a)
+      end
+    end
+    @england_news2= indexlist
+
+    @filterrific = initialize_filterrific(EnglandNew, params[:filterrific]) or return
+    @filtered = @filterrific.find.page(params[:england_news])
+    @england_news = @filtered
+    @england_news = @england_news.paginate(page: params[:page], per_page: 20)
+
+    respond_to do |format|
+      format.html
+      format.js
+      format.csv  {
+          send_data @filtered.paginate(page: params[:page], per_page: 1000).to_csv
+        }
+    end
+
+    if @queueSize.nil?
+      cookie
+    end
+    @compareQueue = session[:engids]
+    @queueSize = cookie.length
+    @addcookie = england_cookie_path
+    @rmcookie = england_cookie_remove_path
+  end
+
+
+  def cookie
+    session[:engids] ||= []
+  end
+
+  def add_to_cookie
+    id = params[:id]
+    if session[:engids].include? id
+      return "error"
+    else
+      cookie << id
+    end
+  end
+
+  def delete_cookie
+    session.delete(:engids)
+    redirect_to engfilter2_path
+  end
+
+  def remove_from_cookie
+    id = params[:id]
+    if exists_in_cookie(id)
+      cookie.delete(id)
+    end
+  end
+
+  def exists_in_cookie(x)
+    if session[:engids].include? x
+      return true
+    else
+      return false
+    end
+  end
+
+  # GET /england_news/1
+  def show
+    @england_new= EnglandNew.find(params[:id])
+    @extract_address = @england_new.add1 + ", " + @england_new.postcode
+    @extract_income = EnglandNew.where(regno: @england_new.regno).find_each
+  end
+
+  def comparison
+    @compare = EnglandNew.find(session[:engids])
+    address=[]
+    regnum = []
+    financials = []
+    expend=[]
+    income = []
+    @compare.each do |a|
+      address.push(a.add1 + ", " + a.postcode)
+    end
+    @regnum = regnum
+    @compare.each do |a|
+      financials.push(EnglandNew.where('regno = ? AND fystart LIKE ?', a.regno, '2015%').find_each)
+    end
+    financials.each do |a|
+      a.each do |b|
+        expend.push([b.name, b.expend])
+      end
+    end
+    financials.each do |a|
+      a.each do |b|
+        income.push([b.name, b.income])
+      end
+    end
+    @expend=expend
+    @income=income
+    @financials = financials
+    @address = address
+
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> cleaningUP
+    @download = EnglandNew.where(id: session[:engids])
+      respond_to do |format|
+        format.html
+        format.js
+        format.csv {
+          send_data @download.to_csv
+        }
+      end
+  end
+
+  # GET /england_news/new
+  def new
+    @england_news = EnglandNew.new
+  end
+
+  # GET /england_news/1/edit
+  def edit
+  end
+
+  # POST /england_news
+  def create
+    @england_news = EnglandNew.new(england_news_params)
+
+    if @england_news.save
+      redirect_to @england_news, notice: 'England new was successfully created.'
+    else
+      render :new
+    end
+  end
+
+  # PATCH/PUT /england_news/1
+  def update
+    if @england_news.update(england_news_params)
+      redirect_to @england_news, notice: 'England new was successfully updated.'
+    else
+      render :edit
+    end
+  end
+
+  # DELETE /england_news/1
+  def destroy
+    @england_news.destroy
+    redirect_to england_news_url, notice: 'England new was successfully destroyed.'
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_england_news
+      @england_news = EnglandNew.find(params[:id])
+    end
+
+    # Only allow a trusted parameter "white list" through.
+    def england_news_params
+      params.require(:england_news).permit(:charity_id, :regno, :subno, :name, :orgtype, :gd, :aob, :nhs, :ha_no, :corr, :add1, :add2, :add3, :add4, :add5, :postcode, :phone, :fax, :created_at, :updated_at, :fystart, :fyend, :income, :expend)
+    end
+end
